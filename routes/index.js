@@ -224,7 +224,9 @@ router.post('/login', function (req, res) {
           }
       } else {
           res.send({
-              error: "Email not found"
+              error: "Email not found",
+              email_received: email,
+              password_received: password
           })
       }
   })
