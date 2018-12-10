@@ -9,6 +9,7 @@ router.get('/', function(req, res) {
 });
 
 router.post('/user', function (req, res) {
+    var username = req.body.username;
     var email = req.body.email;
     var password = req.body.password;
     User.findOne({ email: email }, function (err, user) {
@@ -23,6 +24,7 @@ router.post('/user', function (req, res) {
             })
         }
         var newUser = new User({
+            username: username,
             email: email,
             password: password
         });
@@ -33,7 +35,7 @@ router.post('/user', function (req, res) {
 });
 
 router.get('/user', function (req, res) {
-    User.findOne({ email: req.query.email }, function (err, user) {
+    User.findOne({ username: req.query.username }, function (err, user) {
         if (err) {
             res.send({
                 error: err
@@ -41,7 +43,7 @@ router.get('/user', function (req, res) {
         }
         if (user) {
             res.send({
-                email: user.email,
+                username: user.username,
                 history: user.viewHistory,
                 watchlist: user.watchlist
             })
@@ -50,8 +52,8 @@ router.get('/user', function (req, res) {
 });
 
 router.post('/watchlist/', function (req, res) {
-    var email = req.body.email;
-    User.findOne({ email: email }, function (err, user) {
+    var username = req.body.username;
+    User.findOne({ username: username }, function (err, user) {
         if (err) {
             req.send({
                 error: err
@@ -76,14 +78,14 @@ router.post('/watchlist/', function (req, res) {
             });
         } else {
             res.send({
-                error: "Email not found"
+                error: "Username not found"
             })
         }
     })
 });
 
 router.get('/watchlist', function (req, res) {
-    User.findOne({ email: req.query.email }, function (err, user) {
+    User.findOne({ username: req.query.username }, function (err, user) {
         if (err) {
             req.send({
                 error: err
@@ -93,17 +95,17 @@ router.get('/watchlist', function (req, res) {
             res.send(user.watchlist)
         } else {
             res.send({
-                error: "Email not found"
+                error: "Username not found"
             })
         }
     })
 });
 
 router.delete('/watchlist', function (req, res) {
-    var email = req.query.email;
+    var username = req.query.username;
     var id = req.query.id;
     var found = false;
-    User.findOne({ email: email }, function (err, user) {
+    User.findOne({ username: username }, function (err, user) {
         if (err) { req.send({ error: err }) }
         if (user) {
             for (var i = 0; i < user.watchlist.length; i++) {
@@ -118,15 +120,15 @@ router.delete('/watchlist', function (req, res) {
             }
         } else {
             res.send({
-                error: "Email not found"
+                error: "Username not found"
             })
         }
     })
 });
 
 router.post('/history', function (req, res) {
-    var email = req.body.email;
-    User.findOne({ email: email }, function (err, user) {
+    var username = req.body.username;
+    User.findOne({ username: username }, function (err, user) {
         if (err) {
             req.send({
                 error: err
@@ -149,14 +151,14 @@ router.post('/history', function (req, res) {
             });
         } else {
             res.send({
-                error: "Email not found"
+                error: "Username not found"
             })
         }
     })
 });
 
 router.get('/history/', function (req, res) {
-    User.findOne({ email: req.query.email }, function (err, user) {
+    User.findOne({ username: req.query.username }, function (err, user) {
         if (err) {
             req.send({
                 error: err
@@ -166,17 +168,17 @@ router.get('/history/', function (req, res) {
             res.send(user.viewHistory)
         } else {
             res.send({
-                error: "Email not found"
+                error: "Username not found"
             })
         }
     })
 });
 
 router.delete('/history', function (req, res) {
-    var email = req.query.email;
+    var username = req.query.username;
     var id = req.query.id;
     var found = false;
-    User.findOne({ email: email }, function (err, user) {
+    User.findOne({ username: username }, function (err, user) {
         if (err) { req.send({ error: err }) }
         if (user) {
             for (var i = 0; i < user.viewHistory.length; i++) {
@@ -191,7 +193,7 @@ router.delete('/history', function (req, res) {
             }
         } else {
             res.send({
-                error: "Email not found"
+                error: "Username not found"
             })
         }
     })
@@ -212,7 +214,7 @@ router.post('/login', function (req, res) {
           if (user.password === password) {
               return res.send({
                   result: "success",
-                  email: user.email
+                  username: user.username
               })
           } else {
               return res.send({
