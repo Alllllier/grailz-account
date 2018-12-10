@@ -60,7 +60,12 @@ router.post('/watchlist/', function (req, res) {
             })
         }
         if (user) {
-            user.watchlist.push({
+            for (var i = 0; i < user.watchlist.length; i++) {
+                if (user.watchlist[i].product_id === req.body.product_id) {
+                    user.watchlist.splice(i, 1);
+                }
+            }
+            user.watchlist.unshift({
                 product_id: req.body.product_id,
                 date: req.body.date,
                 title: req.body.title,
@@ -135,7 +140,12 @@ router.post('/history', function (req, res) {
             })
         }
         if (user) {
-            user.viewHistory.push({
+            for (var i = 0; i < user.viewHistory.length; i++) {
+                if (user.viewHistory[i].product_id === req.body.product_id) {
+                    user.viewHistory.splice(i, 1);
+                }
+            }
+            user.viewHistory.unshift({
                 product_id: req.body.product_id,
                 title: req.body.title,
                 image: req.body.image
