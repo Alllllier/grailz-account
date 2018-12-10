@@ -8,7 +8,7 @@ var indexRouter = require('./routes/index');
 
 var app = express();
 
-mongoose.connect("mongodb://localhost:27017/test", { useNewUrlParser: true });
+mongoose.connect("mongodb://ally:q10823970.@ds119486.mlab.com:19486/grailz", { useNewUrlParser: true });
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
